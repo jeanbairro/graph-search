@@ -7,7 +7,7 @@ function Xml(src) {
 
 	xhttp.overrideMimeType('text/xml');
 
-	/* Para ler um arquivo sem utilizar um servidor http, veja isso: como-ler-arquivos-localmente-sem-servidor-http.txt */
+	/* Para ler um arquivo sem utilizar um servidor http, veja isso: how-to-read-files-without-http-server.txt */
 	xhttp.open("GET", src, false);
 	xhttp.send(null);
 	xmlDoc = xhttp.responseXML;

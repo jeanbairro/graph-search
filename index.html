@@ -1,12 +1,24 @@
 <html>
 	<head>
-		<title></title>
+		<meta charset="utf-8">
+		<title>Graph search</title>
+		<link rel="stylesheet" href="style.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	</head>
 	<body>
-		<h2>Leitor de Xml</h2>
+		<div class="file-reader-container">
+			<h2>Selecione o arquivo xml</h2>
+			<input type="file" id="fileinput">
+		</div>
+
+		<canvas id="canvas"></canvas>
+
+		<script src="lib/jquery-3.1.0.min.js"></script>
+		<script src="reader.js"></script>
 		<script src="main.js"></script>
 		<script>
-			start();
+			document.getElementById('fileinput')
+				.addEventListener('change', readXml, false);
 		</script>
 	</body>
 <html>

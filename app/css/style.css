@@ -1,0 +1,39 @@
+body {
+	background: #edeff1;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.footer a, .footer a:visited {
+    color: #69707a;
+}
+
+.form-control {
+	border-radius: 0;
+}
+
+.page-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.form-group-btn {
+	margin-top: 25px;
+}
+
+.columns {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#path-result {
+	width: 100%;
+	text-align: center;
+	font-weight: bold;
+}
+
+#path-result .success {
+	color: #75c345;
+}
+
+#path-result .error {
+	color: #ec564c;
+}

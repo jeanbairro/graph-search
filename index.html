@@ -2,41 +2,89 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Graph search</title>
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="lib/css/bulma.css">
+		<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+		<link rel="stylesheet" href="app/css/style.css">
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	</head>
 	<body>
-		<div class="informacoes-grafo">
-			<h2 style="margin-bottom:5px;">DFS e BFS</h2>
-			<span>Método:
-				<select id="metodo">
-					<option value="1">DFS</option>
-					<option value="2">BFS</option>
-				</select>
-			</span>
-			<span>Vértice inicial: <input type="text" id="v_inicial" name="v_inicial"/><span>
-			<span>Vértice final:   <input type="text" id="v_final" name="v_final"/></span>
-			<input style="margin-left:10px;" type="file" id="fileinput">
+		<div class="container">
+			<h1 class="page-header">Graph Search</h1>
+			<p>Informe o arquivo fonte, o método de busca (profundidade ou largura), 
+			os vértices inicial e final e clique em <strong>Calcular</strong>.</p>
+
+			<br/>
+			
+			<!-- grid utilizando bootstrap -->
+			<div class="row">
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label>Arquivo</label>
+						<input type="file" id="fileInput" class="filestyle" data-icon="false" data-placeholder="Selecione o XML" data-buttonText="Procurar">
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Método de Busca</label>
+						<select class="form-control" id="method">
+							<option value="1">DFS</option>
+							<option value="2">BFS</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Vértice Inicial</label>
+						<select class="form-control" id="v_initial">
+							<option value="">Selecione</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="form-group">
+						<label>Vértice Final</label>
+						<select class="form-control" id="v_final">
+							<option value="">Selecione</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<div class="form-group-btn">
+						<button id="calcular" class="btn btn-default" type="button">Calcular</button>
+					</div>
+				</div>
+			</div>
+
+			<br />
+
+			<h4 class="page-header">Caminho percorrido</h1>
+			<!-- grid utilizando bulma.io -->
+			<div style="display:none;" id="path" class="columns">
+			</div>
+			
+			<div id="path-result">
+				<h3 style="display:none;" class="success">O vértice final foi encontrado :)</h2>
+				<h3 style="display:none;" class="error">O vértice final não foi encontrado :(</h2>
+			</div>
 		</div>
-
-		<div style="display:none;" class="informacoes-grafo">
-			Conexo: <span id="conexo"></span>
-		</div>
-
-		<br />
-		
-		<canvas id="canvas"></canvas>
-
-		<script src="lib/jquery-3.1.0.min.js"></script>
-		<script src="reader.js"></script>
-		<script src="main.js"></script>
+		<script src="lib/js/jquery-3.1.0.min.js"></script>
+		<script src="lib/js/bootstrap.min.js"></script>
+		<script src="lib/js/bootstrap-filestyle.min.js"></script>
+		<script src="app/js/reader.js"></script>
+		<script src="app/js/domain.js"></script>
+		<script src="app/js/search-strategy.js"></script>
+		<script src="app/js/main.js"></script>
 		<script>
-			$("#fileinput").change(function(e) {
+			$("#fileInput").change(function(e) {
 				readXml(e);
 			});
 
-			$("#metodo, #v_inicial, #v_final").change(function() {
-				$("#fileinput").trigger("change");
+			$("#method").change(function() {
+				$("#fileInput").trigger("change");
+			});
+
+			$("#calcular").click(function() {
+				$("#fileInput").trigger("change");
 			});
 		</script>
 	</body>

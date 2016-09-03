@@ -9,6 +9,6 @@ function readXml(evt) {
 		};
 		reader.readAsText(file);
 	} else { 
-		alert("Falha na leitura do XML.");
+		console.log("Falha na leitura do XML.");
 	}
 }

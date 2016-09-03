@@ -12,3 +12,15 @@ body {
 canvas {
 	background: #ecf0f1;
 }
+
+.informacoes-grafo span {
+	font-weight: bold;
+}
+
+select, input[type="text"] {
+    line-height: 20px;
+    padding: 3px;
+    border-radius: 4px;
+    margin: 10px;
+    width: 60px;
+}

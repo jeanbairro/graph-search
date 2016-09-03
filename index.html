@@ -6,19 +6,38 @@
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 	</head>
 	<body>
-		<div class="file-reader-container">
-			<h2>Selecione o arquivo xml</h2>
-			<input type="file" id="fileinput">
+		<div class="informacoes-grafo">
+			<h2 style="margin-bottom:5px;">DFS e BFS</h2>
+			<span>Método:
+				<select id="metodo">
+					<option value="1">DFS</option>
+					<option value="2">BFS</option>
+				</select>
+			</span>
+			<span>Vértice inicial: <input type="text" id="v_inicial" name="v_inicial"/><span>
+			<span>Vértice final:   <input type="text" id="v_final" name="v_final"/></span>
+			<input style="margin-left:10px;" type="file" id="fileinput">
 		</div>
 
+		<div style="display:none;" class="informacoes-grafo">
+			Conexo: <span id="conexo"></span>
+		</div>
+
+		<br />
+		
 		<canvas id="canvas"></canvas>
 
 		<script src="lib/jquery-3.1.0.min.js"></script>
 		<script src="reader.js"></script>
 		<script src="main.js"></script>
 		<script>
-			document.getElementById('fileinput')
-				.addEventListener('change', readXml, false);
+			$("#fileinput").change(function(e) {
+				readXml(e);
+			});
+
+			$("#metodo, #v_inicial, #v_final").change(function() {
+				$("#fileinput").trigger("change");
+			});
 		</script>
 	</body>
 <html>

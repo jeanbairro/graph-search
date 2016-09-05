@@ -76,6 +76,9 @@
 		<script src="app/js/main.js"></script>
 		<script>
 			$("#fileInput").change(function(e) {
+				$("#path").hide();
+				$("#path-result .success").hide();
+				$("#path-result .error").hide();
 				readXml(e);
 			});
 

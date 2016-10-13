@@ -10,18 +10,15 @@ Searcher.prototype.search = function(labelInitialVertice, labelWantedVertice, gr
 	var initialVertice = graph.findVertice(labelInitialVertice);
 	var wantedVertice = graph.findVertice(labelWantedVertice);
 
-	if (!initialVertice || !wantedVertice) { /* Não sei se poderá ter essa verificação */
-		alert("Informe vértices existentes!");
-		return;
-	}
-
 	var visited = [];
+
 	var path = new Path();
+	var costs = [];
 
-	this.method.search(initialVertice, wantedVertice.id, graph, path, visited);
+	costs = this.method.search(initialVertice, wantedVertice.id, graph, path, visited);
 
-	console.log(path);
 	draw(path);
+	drawCosts(graph.vertices, costs);
 };
 
 function DepthFirstSearch() {
@@ -41,7 +38,7 @@ function DepthFirstSearch() {
 		var len = graph.vertices.length;
 		for (var i = 0; i < len; i++) {
 			var vertice = graph.vertices[i];
-			if (!vertice.visited && graph.areAdjacentVertices(refVertice.id, vertice.id, graph.isDirected)) {
+			if (!vertice.visited && graph.areAdjacentVertices(refVertice.id, vertice.id)) {
 				return this.search(vertice, idWantedVertice, graph, path, visitedStack);
 			}
 		}
@@ -78,7 +75,7 @@ function BreadthFirstSearch() {
 		var len = graph.vertices.length;
 		for (var i = 0; i < len; i++) {
 			var vertice = graph.vertices[i];
-			if (!vertice.visited && graph.areAdjacentVertices(refVertice.id, vertice.id, graph.isDirected)) {
+			if (!vertice.visited && graph.areAdjacentVertices(refVertice.id, vertice.id)) {
 				path.vertices.push(vertice);
 				if (vertice.id == idWantedVertice) {
 					path.found = true;
@@ -100,5 +97,50 @@ function BreadthFirstSearch() {
 				return this.search(graph.firstVerticeNotVisited(), idWantedVertice, graph, path, visitedQueue);
 			}
 		}
+	}
+}
+
+function resultLine(cost, label) {
+	this.cost = cost;
+	this.label = label;
+}
+
+function DijkstraSearch() {
+	this.search = function (refVertice, idWantedVertice, graph, path, dist) {
+		var result = [];
+		var len = graph.vertices.length;
+		for (var i = 0; i < len; i++) {
+			dist.push(Number.MAX_VALUE);
+		}
+
+		for (var i = 0; i < len; i++) {
+			result.push(new resultLine(0, ""));
+		}
+
+		dist[refVertice.id] = 0;
+
+		for (var i = 0; i < len; i++) {
+			var vertice = graph.firstVerticeFromPriorityDijkstra(dist);
+
+			if (typeof vertice == 'undefined') continue;
+
+			graph.setVerticeVisited(vertice.id);
+
+			for (var j = 0; j < len; j++) {
+				var vertice_aux = graph.vertices[j];
+
+				if (graph.areAdjacentVertices(vertice.id, vertice_aux.id)) {
+					var edge = graph.returnEdge(vertice.id, vertice_aux.id);
+					var x = dist[vertice.id] + edge.weight;
+					if (dist[vertice_aux.id] > x) {
+						dist[vertice_aux.id] = x;
+						result[vertice_aux.id].label = vertice.label;
+						result[vertice_aux.id].cost = x;
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 }

@@ -17,19 +17,21 @@
 			
 			<!-- grid utilizando bootstrap -->
 			<div class="row">
+			<div class="col-sm-2">
+					<div class="form-group">
+						<label>Selecione o algoritmo</label>
+						<select class="form-control" id="method">
+							<option value="1">DFS</option>
+							<option value="2">BFS</option>
+							<option value="3">Dijkstra</option>
+							<option value="4">A*</option>
+						</select>
+					</div>
+				</div>
 				<div class="col-sm-3">
 					<div class="form-group">
 						<label>Arquivo</label>
 						<input type="file" id="fileInput" class="filestyle" data-icon="false" data-placeholder="Selecione o XML" data-buttonText="Procurar">
-					</div>
-				</div>
-				<div class="col-sm-2">
-					<div class="form-group">
-						<label>Método de Busca</label>
-						<select class="form-control" id="method">
-							<option value="1">DFS</option>
-							<option value="2">BFS</option>
-						</select>
 					</div>
 				</div>
 				<div class="col-sm-2">
@@ -40,7 +42,7 @@
 						</select>
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-2 div-v-final" style="display: block;">
 					<div class="form-group">
 						<label>Vértice Final</label>
 						<select class="form-control" id="v_final">
@@ -57,7 +59,7 @@
 
 			<br />
 
-			<h4 class="page-header">Caminho percorrido</h1>
+			<h4 class="page-header">Resultado</h4>
 			<!-- grid utilizando bulma.io -->
 			<div style="display:none;" id="path" class="columns">
 			</div>
@@ -83,7 +85,18 @@
 			});
 
 			$("#method").change(function() {
+				if ($(this).val() == "3") {
+					$(".div-v-final").hide("slow");
+				} else {
+					$(".div-v-final").show("slow");
+				}
 				$("#fileInput").trigger("change");
+			});
+
+			$("#v_initial").change(function(){
+				if ($("#method").val() == "3") {
+					$("#v_final").val($(this).val());
+				}
 			});
 
 			$("#calcular").click(function() {

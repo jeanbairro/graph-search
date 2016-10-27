@@ -11,12 +11,17 @@ function start(xml) {
 		seacher.setMethod(new BreadthFirstSearch());
 	} else if (method == "3") {
 		seacher.setMethod(new DijkstraSearch());
+	} else if (method == "5") {
+		var grafo = createGraphFromXml(xml);
+		grafo.color();
+		drawColor(grafo.vertices);
 	} else {
 		var map = createMapFromXml(xml);
-		
+		var dijkstra = new SearchAStar();
+		drawAStar(dijkstra.search(map));
 	}
 
-	if (method != "4") {
+	if (method != "4" && method != "5") {
 		var initial = $("#v_initial").val() || "";
 		var final = $("#v_final").val() || "";
 		
@@ -77,7 +82,7 @@ function createMapFromXml(xml) {
 	for (var i = 0; i < murosXml.length; i++) {
 		muros.push(
 			new Position (
-				murosXml[i].innerHTML
+				murosXml[i].innerHTML, 0, 0
 			)
 		);
 	}
@@ -89,16 +94,16 @@ function createMapFromXml(xml) {
 
 	for (var i = 0; i < qtd_linhas; i++) {
 		for (var j = 0; j < qtd_colunas; j++) {
-			data[i][j] = new MapItem();
+			data[i][j] = new MapItem(0, 0, 0, MapTileType.PATH, null, new Position("", i, j));
 		}
 	}
 
 	for (var i = 0; i < muros.length; i++) {
-		data[muros[i].x][muros[i].y] = new MapItem(0, 0, 0, MapTileType.WALL, null);
+		data[muros[i].x][muros[i].y] = new MapItem(0, 0, 0, MapTileType.WALL, null, new Position("", muros[i].x, muros[i].y));
 	}
 
-	data[posicaoInicial.x][posicaoInicial.y] = new MapItem(0, 0, 0, MapTileType.NOW, null);;
-	data[posicaoFinal.x][posicaoFinal.y] = new MapItem(0, 0, 0, MapTileType.END, null);;
+	data[posicaoInicial.x][posicaoInicial.y] = new MapItem(0, 0, 0, MapTileType.NOW, null, posicaoInicial);
+	data[posicaoFinal.x][posicaoFinal.y] = new MapItem(0, 0, 0, MapTileType.END, null, posicaoFinal);
 
 	var printMap = "";
 	for (var i = 0; i < qtd_linhas; i++) {
@@ -110,7 +115,7 @@ function createMapFromXml(xml) {
 
 	console.log(printMap);
 
-	return new Map(posicaoInicial, posicaoFinal, data)	
+	return new Map(data[posicaoInicial.x][posicaoInicial.y], data[posicaoFinal.x][posicaoFinal.y], data)	
 }
 
 function createSelectsFromVertices(vertices) {
@@ -122,6 +127,41 @@ function createSelectsFromVertices(vertices) {
 	  	$('<option value="'+vertices[vertice].label+'">'+vertices[vertice].label+'</option>').appendTo('#v_initial');
 	  	$('<option value="'+vertices[vertice].label+'">'+vertices[vertice].label+'</option>').appendTo('#v_final');
 	}
+}
+
+function drawAStar(path) {
+	if (path.length == 0) {
+		$error.show("slow");
+		return;
+	};
+	
+	var $path = $("#path");
+	var $success = $("#path-result .success");
+	var $error = $("#path-result .error");
+	var color = "primary";
+	
+	$success.hide();
+	$error.hide();
+	$path.hide();
+	$path.html("");
+
+	path.forEach(function(item, index){
+		$path.append($('<div class="column is-4"><div class="notification is-'+color+' has-text-centered"><p class="title">'+(item.position.x+1) + ", " + (item.position.y+1) + " G: "+ item.g + " F: " + item.f + '</p></div></div>'));
+
+		if (color == "primary") {
+			color = "info";
+		} else if (color == "info") {
+			color = "success";
+		} else if (color == "success") {
+			color = "warning";
+		} else if (color == "warning") {
+			color = "danger";
+		} else {
+			color = "primary";
+		}
+	});
+
+	$path.show("slow");
 }
 
 function draw(path) {
@@ -160,6 +200,20 @@ function draw(path) {
 	} else {
 		$error.show("slow");
 	}
+}
+
+function drawColor(vertices) {
+	if (vertices.length == 0) return;
+
+	var $path = $("#path");
+	$path.hide();
+	$path.html("");
+
+	vertices.forEach(function(vertice, index){
+		$path.append($('<div style="background-color:'+vertice.color+'" class="column"><div class="notification has-text-centered"><p class="title">'+vertice.label+'</p></div></div>'));
+	});
+
+	$path.show("slow");
 }
 
 function drawCosts(vertices, costs) {

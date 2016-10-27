@@ -25,6 +25,7 @@
 							<option value="2">BFS</option>
 							<option value="3">Dijkstra</option>
 							<option value="4">A*</option>
+							<option value="5">Coloração</option>
 						</select>
 					</div>
 				</div>
@@ -61,7 +62,7 @@
 
 			<h4 class="page-header">Resultado</h4>
 			<!-- grid utilizando bulma.io -->
-			<div style="display:none;" id="path" class="columns">
+			<div id="path" class="columns">
 			</div>
 			
 			<div id="path-result">
@@ -78,7 +79,7 @@
 		<script src="app/js/main.js"></script>
 		<script>
 			$("#fileInput").change(function(e) {
-				$("#path").hide();
+				/*$("#path").hide();*/
 				$("#path-result .success").hide();
 				$("#path-result .error").hide();
 				readXml(e);
